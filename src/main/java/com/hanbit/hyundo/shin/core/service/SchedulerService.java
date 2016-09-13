@@ -24,7 +24,7 @@ public class SchedulerService {
 
 	public int removeSchedule(String scheduleId) {
 
-		return scheduleDAO.deleteSchedule();
+		return scheduleDAO.deleteSchedule(scheduleId);
 	}
 
 	public List<ScheduleVO> listSchedules(String startDt, String endDt) {

@@ -3,6 +3,7 @@ package com.hanbit.hyundo.shin.core.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,53 @@ public class ScheduleDAO {
 		return result;
 	}
 
-	public int deleteSchedule(){
-		return 0;
+	public int deleteSchedule(String scheduleID) {
+		Connection connection = getConnection();
+
+		String sql = "DELETE FROM SCHEDULE WHERE SCHEDULE_ID = ?";
+		List params = new ArrayList();
+		params.add(scheduleID);
+		
+		int result = executeSql(connection, sql, params);
+		closeConnection(connection);
+
+		return result;
 	}
+
+	public ScheduleVO selectSchedule(String scheduleID) {
+		Connection connection = getConnection();
+
+		String sql = "SELECT * FROM SCHEDULE WHERE SCHEDULE_ID = ?";
+		List params = new ArrayList();
+		params.add(scheduleID);
+		
+		closeConnection(connection);
+		ScheduleVO vo = executeQuery(connection, sql, params);
+		return vo;
+	}
+
+	private ScheduleVO executeQuery(Connection connection, String sql, Object params) {
+		ResultSet result = null;
+		ScheduleVO vo = new ScheduleVO();
+		try {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setObject(1, params);
+			result = statement.executeQuery();
+			if(result.next()){
+			vo.setScheduleId(result.getString(1));
+			vo.setScheduleId(result.getString(2));
+			vo.setScheduleId(result.getString(3));
+			vo.setScheduleId(result.getString(4));
+			vo.setScheduleId(result.getString(5));
+			}
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+		
+		
+	}
+
 }
